@@ -1,8 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using LOGINN.Data;
+using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+// Fix DataProtection para Render
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo("/tmp/dataprotection-keys"));
+
 
 // Agregar soporte para Vistas (MVC) y Controladores de API
 builder.Services.AddControllersWithViews();
@@ -10,7 +16,8 @@ builder.Services.AddControllers(); // ? Asegura la configuración estricta de con
 
 // Configuración de la base de datos
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
+        npgsqlOptions => npgsqlOptions.CommandTimeout(60)));
 
 // Configuración de Sesiones (necesaria para tu login)
 builder.Services.AddDistributedMemoryCache();
