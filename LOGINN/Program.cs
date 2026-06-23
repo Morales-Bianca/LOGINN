@@ -9,7 +9,7 @@ builder.Services.AddControllers(); // ? Asegura la configuración estricta de con
 
 // Configuración de la base de datos
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Configuración de Sesiones (necesaria para tu login)
 builder.Services.AddDistributedMemoryCache();
