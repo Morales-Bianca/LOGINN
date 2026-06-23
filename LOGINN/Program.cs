@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using LOGINN.Data; 
+using LOGINN.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // Agregar soporte para Vistas (MVC) y Controladores de API
 builder.Services.AddControllersWithViews();
