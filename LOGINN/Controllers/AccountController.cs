@@ -32,23 +32,16 @@ namespace LOGINN.Controllers
 
 
         [HttpGet]
-
-        public IActionResult Login()
-
+        public IActionResult Login(string mensaje)
         {
-
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString("UsuarioId")))
-
-            {
-
                 return RedirectToAction("Index", "Home");
 
-            }
+            if (!string.IsNullOrEmpty(mensaje))
+                ViewBag.Mensaje = mensaje;
 
             return View();
-
         }
-
 
 
         [HttpPost]
@@ -145,9 +138,7 @@ namespace LOGINN.Controllers
 
 
 
-                TempData["Mensaje"] = "Registro exitoso. ¡Inicia sesión!";
-
-                return RedirectToAction("Login");
+                return RedirectToAction("Login", new { mensaje = "Registro exitoso. ¡Inicia sesión!" });
 
             }
 
