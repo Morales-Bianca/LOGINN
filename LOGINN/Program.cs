@@ -17,8 +17,10 @@ builder.Services.AddControllers(); // ? Asegura la configuración estricta de con
 // Configuración de la base de datos
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
-        npgsqlOptions => npgsqlOptions.CommandTimeout(60)));
-
+        npgsqlOptions => {
+            npgsqlOptions.CommandTimeout(120);
+            npgsqlOptions.EnableRetryOnFailure(3, TimeSpan.FromSeconds(5), null);
+        }));
 // Configuración de Sesiones (necesaria para tu login)
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
